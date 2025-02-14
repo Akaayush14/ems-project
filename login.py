@@ -1,3 +1,4 @@
+dev
 from tkinter import *
 root = Tk()
 
@@ -49,3 +50,6 @@ b2.place(x = 610,y = 285)
 
 root.mainloop()
 
+
+
+main
