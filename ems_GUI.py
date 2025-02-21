@@ -1,5 +1,6 @@
 from customtkinter import *
 from PIL import Image
+from tkinter import ttk
 
 window = CTk()
 
@@ -67,5 +68,63 @@ salary_label.grid(row=5, column=0, padx=20, pady=15, sticky='w')
 
 salary_entry = CTkEntry(left_frame, font = ('helvetica', 15, 'bold'), fg_color = 'white', text_color = 'black', width = 180)
 salary_entry.grid(row=5, column=1)
+
+#Right frame:
+right_frame = CTkFrame(window, fg_color = "light grey")
+right_frame.grid(row=1, column=1)
+
+#Adding label and entry inside right frame:
+search_options = ['Id', 'Name', 'Phone', 'Role', 'Gender', 'Salary']
+search_box = CTkComboBox(right_frame, values = search_options, font = ('helvetica', 15, 'bold'), fg_color = 'white', text_color = 'black', state = 'readonly')
+search_box.grid(row=0, column=0)
+search_box.set('Search By')
+
+search_Entry = CTkEntry(right_frame, font = ('helvetica', 15, 'bold'), fg_color = 'white', text_color = 'black')
+search_Entry.grid(row=0, column=1)
+
+#Creating Buttons
+search_button = CTkButton(right_frame, text = "Search", width = 100)
+search_button.grid(row=0, column=2)
+
+showall_button = CTkButton(right_frame, text = "Show All", width = 100)
+showall_button.grid(row=0, column=3)
+
+#Adding a tree:
+tree = ttk.Treeview(right_frame, height = 43)
+tree.grid(row=1, column = 0, columnspan=4)
+
+#columns in tree:
+tree['columns'] = ('Id', 'Name', 'Phone', 'Role', 'Gender', 'Salary')
+
+#Headings in tree:
+tree.heading('Id', text = 'Id')
+tree.heading('Name', text = 'Name')
+tree.heading('Phone', text = 'Phone')
+tree.heading('Role', text = 'Role')
+tree.heading('Gender', text = 'Gender')
+tree.heading('Salary', text = 'Salary')
+
+#Process to remove extra columns:
+tree.config(show = 'headings')
+
+#changing widths of columns:
+tree.column('Id', width = 100)
+tree.column('Name', width = 160)
+tree.column('Phone', width = 160)
+tree.column('Role', width = 200)
+tree.column('Gender', width = 100)
+tree.column('Salary', width = 100)
+
+#Styling the tree:
+style = ttk.Style()
+style.configure('Treeview.Heading', font = ("Arial", 18, "bold"))
+
+#Making frame and letting button to be added there:
+button_frame = CTkFrame(window)
+button_frame.grid(row=2, column = 0)
+
+new_button = CTkButton(button_frame, text = 'New Employee', font = ('helvetica', 15, 'bold'), width = 160, corner_radius = 15)
+new_button.grid(row=0, column=0, pady=5)
+
 
 window.mainloop()
