@@ -24,7 +24,7 @@ image_2 = CTkImage(Image.open("2.png"), size = (920,200))
 image_label_2 = CTkLabel(window, image = image_2, text = " ", fg_color = "white") 
 image_label_2.grid(row=0, column=1)
 
-#Left frame:
+#Left frame(frame-1):
 left_frame = CTkFrame(window, fg_color = "cadet blue")
 left_frame.grid(row=1, column=0)
 
@@ -69,7 +69,7 @@ salary_label.grid(row=5, column=0, padx=20, pady=15, sticky='w')
 salary_entry = CTkEntry(left_frame, font = ('helvetica', 15, 'bold'), fg_color = 'white', text_color = 'black', width = 180)
 salary_entry.grid(row=5, column=1)
 
-#Right frame:
+#Right frame(frame-2):
 right_frame = CTkFrame(window, fg_color = "light grey")
 right_frame.grid(row=1, column=1)
 
@@ -82,15 +82,19 @@ search_box.set('Search By')
 search_Entry = CTkEntry(right_frame, font = ('helvetica', 15, 'bold'), fg_color = 'white', text_color = 'black')
 search_Entry.grid(row=0, column=1)
 
-#Creating Buttons
+#Creating Buttons in right frame portion:
 search_button = CTkButton(right_frame, text = "Search", width = 100)
 search_button.grid(row=0, column=2)
 
 showall_button = CTkButton(right_frame, text = "Show All", width = 100)
-showall_button.grid(row=0, column=3)
+showall_button.grid(row=0, column=3, pady=5) #padding in one button, that same padding will be applied to all others.
+
+#Accessing scrollbar class and keeping it in right frame:
+scrollbar = ttk.Scrollbar(right_frame, orient = VERTICAL)
+scrollbar.grid(row=1, column=4, sticky='ns')
 
 #Adding a tree:
-tree = ttk.Treeview(right_frame, height = 43)
+tree = ttk.Treeview(right_frame, height = 13)
 tree.grid(row=1, column = 0, columnspan=4)
 
 #columns in tree:
@@ -108,23 +112,37 @@ tree.heading('Salary', text = 'Salary')
 tree.config(show = 'headings')
 
 #changing widths of columns:
-tree.column('Id', width = 100)
+tree.column('Id', width = 140)
 tree.column('Name', width = 160)
 tree.column('Phone', width = 160)
 tree.column('Role', width = 200)
-tree.column('Gender', width = 100)
-tree.column('Salary', width = 100)
+tree.column('Gender', width = 140)
+tree.column('Salary', width = 140)
 
 #Styling the tree:
 style = ttk.Style()
-style.configure('Treeview.Heading', font = ("Arial", 18, "bold"))
 
-#Making frame and letting button to be added there:
-button_frame = CTkFrame(window)
-button_frame.grid(row=2, column = 0)
+#changing font of treeview heading:
+style.configure('Treeview.Heading', font = ("aerial", 18, "bold"))
 
-new_button = CTkButton(button_frame, text = 'New Employee', font = ('helvetica', 15, 'bold'), width = 160, corner_radius = 15)
+#Button frame(frame-3):
+button_frame = CTkFrame(window, fg_color = 'cadet blue')
+button_frame.grid(row=2, column=0, columnspan=2)
+
+#Buttons in frame-3:
+new_button = CTkButton(button_frame, text = 'New Employee', font = ('aerial', 15, 'bold'), width = 160, corner_radius = 15)
 new_button.grid(row=0, column=0, pady=5)
 
+add_button = CTkButton(button_frame, text = 'Add Employee', font = ('aerial', 15, 'bold'), width = 160, corner_radius = 15)
+add_button.grid(row=0, column=1, padx=5, pady=5)
+
+update_button = CTkButton(button_frame, text = 'Update Employee', font = ('aerial', 15, 'bold'), width = 160, corner_radius = 15)
+update_button.grid(row=0, column=2, padx=5, pady=5)
+
+delete_button = CTkButton(button_frame, text = 'Delete Employee', font = ('aerial', 15, 'bold'), width = 160, corner_radius = 15)
+delete_button.grid(row=0, column=3, padx=5, pady=5)
+
+deleteall_button = CTkButton(button_frame, text = 'Delete All', font = ('aerial', 15, 'bold'), width = 160, corner_radius = 15)
+deleteall_button.grid(row=0, column=4, padx=5, pady=5)
 
 window.mainloop()
