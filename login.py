@@ -1,103 +1,91 @@
+from customtkinter import *
+from PIL import Image
+from tkinter import messagebox
 
-from tkinter import *
-root = Tk()
+def on_closing():
+    if messagebox.askyesno("Exit", "Are you sure you want to exit?"):
+        root.destroy()
 
-#Title:
+def login():
+    if username_entry.get() == '' or password_entry.get() == '':
+        messagebox.showerror('Error', 'Fields cannot be empty')
+    elif username_entry.get() == 'falcon' and password_entry.get() == '1234':
+        messagebox.showerror('Success', 'Successful login')
+        root.destroy()
+        import ems_GUI  
+    else:
+        messagebox.showerror('Error', 'Incorrect credentials!')
+
+root = CTk()
+#calling the on_closing fuction and here the predefined text will tell the tkinter to close the window.
+root.protocol("WM_DELETE_WINDOW", on_closing)
+
+#To show a confirmatory window closing message box:
+root.protocol("on_closing") 
+
+#Background colour of window:                               
+root.configure(fg_color = "white")
+
+#Window size:
+root.geometry("900x500+650+300")
+root.resizable(0,0)
+
+#Window title:
 root.title("Login")
+
+#Login icon in window:
 root.iconbitmap("Employee.ico")
 
-#Geometry of window:
-root.geometry("825x500+420+230") #+300 --> the top left corner will be 300 pixels from the left, +200 --> it will  be 200 pixels below from the top of the screen.
-root.resizable(False,False)
+#Background images: Firstly, importing the image.
+image_1 = CTkImage(Image.open("login-image.png"), size = (375,365))
+#Adding image to the label, and addint empty text to remove CTk text from images.
+image_label_1 = CTkLabel(root, image = image_1, text = " ", fg_color = "white") 
+image_label_1.place(x=50, y=80)
 
-#Background colour of window:
-root.config(bg = "#fff") #fff-white,#000 -black, root.config is used to change the background colour of window
+image_2 = CTkImage(Image.open("EMS.png"), size = (50,50))
+image_label_2 = CTkLabel(root, image = image_2, text = " ", fg_color = "white")
+image_label_2.place(x=20, y=30)
 
+#Frame:
+frame = CTkFrame(root, width=300, height=300, fg_color="linen", border_color = "white", corner_radius=10)
+frame.place(x=550, y=100)
 
-#Framing:
-f1 = Frame(root,width = 300, height = 300,bg = "linen")
-f1.place(x = 450,y = 110)
+#Heading:
+#Adding text in a label, like how we added image.
+Heading_label_1 = CTkLabel(root, text = "Employee Management System", fg_color= "white", text_color ="DeepSkyBlue3", font = ("Goudy Old Style", 25 , "bold"))
+Heading_label_1.place(x = 90, y = 40)
 
+Heading_label_2 = CTkLabel(root, text = "Good to see you again!", fg_color= "white", text_color ="DeepSkyBlue3", font = ("Goudy Old Style", 26 , "bold"))
+Heading_label_2.place(x = 568, y = 44)
 
-#Headings
-Headings_1 = Label(root,text = "Employee Management System",fg = "cadet blue",bg = "white",font = "Palatino 17 bold")
-Headings_1.place(x = 70,y = 34)
+#Entries:
+username_entry = CTkEntry(root, placeholder_text = "Username", text_color = "black", width = 200, height = 35, fg_color = "white", border_color = "grey", border_width = 2)
+username_entry.place(x = 580, y = 150)
 
-Headings_2 = Label(root,text = "Good to see you again!",fg = "LightSlateBlue",bg = "white",font = "Palatino 16 bold")
-Headings_2.place(x = 450,y = 34)
+password_entry = CTkEntry(root, placeholder_text = "Password", text_color = "black", width = 200, height = 35, fg_color = "white", border_color = "grey", border_width = 2, show = "*")
+password_entry.place(x = 580, y = 210)
 
-Headings_3 = Label(root,text = "Log in to your account",fg = "Black",bg = "white",font = "cosmicon 10")
-Headings_3.place(x = 452,y = 70)
+#Loading eye icons:
+eye_open = CTkImage(light_image = Image.open("eye_open.png"), size = (20,20))
+eye_closed = CTkImage(light_image = Image.open("eye_close.png"), size = (20,20))
 
-#Username_heading inside frame:
-Headings_4 = Label(root,text = "Username:",fg = "gray20",bg = "linen",font = "Helvetica 13 bold")
-Headings_4.place(x = 460,y = 115)
+#Function to Toggle Password Visibility
+def toggle_password():
+    if password_entry.cget("show") == "*":
+        password_entry.configure(show="")  # Show password
+        toggle_button.configure(image=eye_closed)
+    else:
+        password_entry.configure(show="*")  # Hide password
+        toggle_button.configure(image=eye_open)
 
-
-#Password_heading inside frame:
-Headings_5 = Label(root,text =  "Password:",fg = "gray20",bg = "linen",font = "Helvetica 13 bold")
-Headings_5.place(x = 460,y = 180)
-
-Headings_6 = Label(root,text = "Don't have an account?",fg = "black",bg = "linen",font = "Microsoft 10",border = 0)
-Headings_6.place(x = 462,y = 288)
-
-Headings_7 = Label(root,text = "@powered by-TEAM FALCON",fg = "Black",bg = "white",font = "cosmicon 8")
-Headings_7.place(x = 350,y = 479)
-
-#Variable storing data entered as entries:
-username_var = StringVar()
-password_var = StringVar()
-
-#Username entry box:
-username_entry = Entry(root,width = 23,fg = "black",bg = "white",font = "Aerial 8",border = 2,relief = "ridge")
-username_entry.place(x = 462,y = 145)
-
-#Password entry box:
-password_entry = Entry(root,width = 23,fg = "black",bg = "white",font = "Aerial 8",border = 2,relief = "ridge")
-password_entry.place(x = 462,y = 210)
-
-
-
-
-
-
-
-
-#Background  image of window:
-bg_image=PhotoImage(file="Login page bg 3.png")
-bg_image_label = Label(image=bg_image,bg="white").place(x = 20,y = 105)
-
-EMS_icon = PhotoImage(file = "EMS.png")
-EMS_icon_label = Label(image = EMS_icon,bg="white").place(x = 10,y = 30)
-
+# Eye Button to Toggle Password Visibility    
+toggle_button = CTkButton(frame, text="", image=eye_open, width=30, height=30, fg_color="linen", command = toggle_password, hover = False)
+toggle_button.place(x=227, y=113)
 
 #Buttons:
-b1 = Button(root,text = "Log in ",fg = "burlywood",bg = "white",font = "Palatino 10 bold",border = 2,relief = "ridge")
-b1.place(x = 462,y = 250)
+login_button = CTkButton(root, text = "Login", width = 160, height = 35, cursor = 'hand2', command=login)
+login_button.place(x = 600, y = 265)
 
-b2 = Button(root,text = "Register account",fg = "burlywood",bg = "white",font = "Palantino 10 bold")
-b2.place(x = 610,y = 285)
-
-#for mouse cursor 
-def mouse_near(n):
-    n.widget.config(bg ="red")#when cursor came near it change the colour to red
-    
-
-def mouse_far(n):
-   n.widget.config(bg="white")#it reset the colour when cursor goes far
-    
-
-b1.bind("<Enter>",mouse_near)
-b1.bind("<Leave>",mouse_far)
-b2.bind("<Enter>",mouse_near)
-b2.bind("<Leave>",mouse_far)
-
-
-
-#test code
 root.mainloop()
-
-
-
 
 

@@ -16,11 +16,11 @@ window.configure(fg_color="cadet blue")
 window.title("Employee Management System")
 
 #GUI image:
-image_1 = CTkImage(Image.open("1.png"), size=(920, 200))
+image_1 = CTkImage(Image.open("GUI image 1.png"), size=(920, 200))
 image_label_1 = CTkLabel(window, image=image_1, text=" ", fg_color="white", width=920, height=200)  # Set width and height here
 image_label_1.place(x=0, y=0, anchor="nw") 
 
-image_2 = CTkImage(Image.open("2.png"), size=(920, 200))
+image_2 = CTkImage(Image.open("GUI image 2.png"), size=(920, 200))
 image_label_2 = CTkLabel(window, image=image_2, text=" ", fg_color="white", width=920, height=200)  # Set width and height here
 image_label_2.place(relx=1.0, y=0, anchor="ne")
 
