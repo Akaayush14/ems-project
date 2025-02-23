@@ -1,9 +1,8 @@
 from customtkinter import *
 from PIL import Image
-from tkinter import ttk
+from tkinter import ttk, messagebox
 
 window = CTk()
-
 #Fullscreen window:
 def maximize_window():
     window.state('zoomed')
@@ -143,6 +142,7 @@ button_frame = CTkFrame(window, fg_color="cadet blue")
 button_frame.grid(row=2, column=0)  # Positioned at the bottom
 
 #Buttons:
+#Lambda function will make the function effective when new button is pressed, not when the code is run.
 new_button = CTkButton(button_frame, text='New Employee', font=('aerial', 15, 'bold'), width=200, height=35, corner_radius=15)
 new_button.grid(row=0, column=0, padx=75, pady=20)
 
