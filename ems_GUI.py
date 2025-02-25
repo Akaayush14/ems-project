@@ -1,6 +1,6 @@
 from customtkinter import *
 from PIL import Image
-from tkinter import ttk, messagebox
+from tkinter import ttk
 
 window = CTk()
 #Fullscreen window:
