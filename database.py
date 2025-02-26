@@ -28,3 +28,32 @@ def connect_db():
     except sqlite3.Error as e:
         messagebox.showerror("Database Error", f"Failed to connect to the database: {e}")
         return None
+    
+#Function to bring or retrieve all employees data from the database(employee.db)
+def fetch_all_employees():
+    conn = connect_db()
+    if conn is not None:
+        try:
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM employees')
+            rows = cursor.fetchall()
+            return rows
+        except sqlite3.Error as e:
+            messagebox.showerror("Database Error", f"Failed to fetch employees: {e}")
+            return []
+        finally:
+            conn.close()
+    return []
+
+#Function to particularly delete an employee record.
+def delete_employee(employee_id):
+    conn = connect_db()
+    if conn is not None:
+        try:
+            cursor = conn.cursor()
+            cursor.execute('DELETE FROM employees WHERE id = ?', (employee_id,))
+            conn.commit()
+        except sqlite3.Error as e:
+            messagebox.showerror("Database Error", f"Failed to delete employee: {e}")
+        finally:
+            conn.close()

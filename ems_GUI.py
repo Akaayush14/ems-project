@@ -1,7 +1,35 @@
 from customtkinter import *
 from PIL import Image
 from tkinter import ttk, messagebox
+from database import * #It imports all functions from database.py
 
+#It calls delete_employee() function to delete the employee from the database.
+def delete_employee_gui():
+    try:
+        selected_item = tree.selection()
+        if not selected_item:
+            messagebox.showerror("Error", "Select an employee to delete!")
+            return
+
+        employee_id = tree.item(selected_item)['values'][0]
+        delete_employee(employee_id)
+        messagebox.showinfo("Success", "Employee deleted successfully!")
+        show_all()
+
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
+
+#It shows all the data present in the database:
+def show_all():
+    try:
+        for row in tree.get_children():
+            tree.delete(row)
+        employees = fetch_all_employees()
+        for employee in employees:
+            tree.insert("", END, values=employee)
+
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
 
 #Function to open full screen window:
 def maximize_window():
@@ -37,7 +65,7 @@ window.grid_rowconfigure(2, weight=1)    #Buttons
 window.grid_columnconfigure(0, weight=1) #Left frame
 window.grid_columnconfigure(1, weight=2) #Right frame
 
-#Header image:
+#Header Images:
 image_1 = CTkImage(Image.open("1.png"), size=(920, 200))
 image_label_1 = CTkLabel(window, image=image_1, text=" ") 
 image_label_1.grid(row=0, column=0, columnspan=2, sticky="nw")
@@ -115,7 +143,7 @@ search_Entry.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
 search_button = CTkButton(right_frame, text="Search", height=35)
 search_button.grid(row=0, column=2, padx=5, pady=5, sticky="ew")
 
-showall_button = CTkButton(right_frame, text="Show All", height=35)
+showall_button = CTkButton(right_frame, text="Show All", command=show_all, height=35)
 showall_button.grid(row=0, column=3, padx=5, pady=5, sticky="ew")
 
 #Treeview: Using for loop to place all headings in tree through grid placement method.
@@ -146,7 +174,7 @@ scrollbar.lift()
 button_frame = CTkFrame(window, fg_color="dark sea green")
 button_frame.grid(row=2, column=0, columnspan=2, sticky="ew", padx=10, pady=10) 
 
-new_button = CTkButton(button_frame, text='New employee', command=lambda: clear(True), height=37)
+new_button = CTkButton(button_frame, text='New employee', height=37)
 new_button.grid(row=0, column=0, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(0, weight=1)
 
@@ -158,7 +186,7 @@ update_button = CTkButton(button_frame, text='Update Employee', height=37)
 update_button.grid(row=0, column=2, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(2, weight=1)
 
-delete_button = CTkButton(button_frame, text='Delete Employee', height=37)
+delete_button = CTkButton(button_frame, text='Delete Employee', command=delete_employee_gui, height=37)
 delete_button.grid(row=0, column=3, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(3, weight=1)
 
