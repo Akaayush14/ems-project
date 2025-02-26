@@ -9,7 +9,7 @@ def maximize_window():
 window.after(10, maximize_window)
 
 #Background colour of window:                               
-window.configure(fg_color="cadet blue")
+window.configure(fg_color="dark sea green")
 
 #Window title:
 window.title("Employee Management System")
@@ -18,38 +18,43 @@ window.grid_rowconfigure(0, weight=0)  # Prevents image from resizing
 window.grid_rowconfigure(1, weight=1)  # Allows left_frame and right_frame to take space
 window.grid_rowconfigure(2, weight=0)  # Keeps button_frame at bottom without affecting row 0
 
-#GUI image:
+#Header image:
 image_1 = CTkImage(Image.open("1.png"), size=(920, 200))
-image_label_1 = CTkLabel(window, image=image_1, text=" ", fg_color="white", width=920, height=200) 
+image_label_1 = CTkLabel(window, image=image_1, text=" ") 
 image_label_1.grid(row=0, column=0, columnspan=2, sticky="nw")
-
 
 image_2 = CTkImage(Image.open("2.png"), size=(920, 200))
 image_label_2 = CTkLabel(window, image=image_2, text=" ") 
 image_label_2.grid(row=0, column=1, columnspan=1, sticky="ne")
 
-################################################################Left frame(frame-1)######################################################################################
-left_frame = CTkFrame(window, fg_color="cadet blue", width=940, height=600)
-left_frame.grid(row=1, column=0, sticky="nsew", padx=8, pady=10)
+################################################################Left Frame######################################################################################
+left_frame = CTkFrame(window, fg_color="dark sea green")
+left_frame.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
+
+#Configuring rows and columns in the left frame:
+for i in range(6): #it configures 6 rows in the left frame.
+    left_frame.grid_rowconfigure(i, weight=1) #each row is given wt=1, which equally shares the vertical space within left frame.(when left frame is resized, all 6 rows will resize proportionally based on the given ht)
+left_frame.grid_columnconfigure(0, weight=1)  #column 0(left clolumn) takes 1 part of horizontal space.
+left_frame.grid_columnconfigure(1, weight=2)  #right column takes 2 parts(takes twice space as left column)
 
 #Labels: 
-id_label = CTkLabel(left_frame, text='Id', fg_color='cadet blue', text_color='white', font=('aerial', 20, 'bold'))
-id_label.grid(row=0, column=0, padx=55, pady=27)
+id_label = CTkLabel(left_frame, text='Id', font=('aerial', 20, 'bold'), text_color='gray23')
+id_label.grid(row=0, column=0, padx=20, pady=10, sticky="w")
 
-name_label = CTkLabel(left_frame, text='Name', fg_color='cadet blue', text_color='white', font=('aerial', 20, 'bold'))
-name_label.grid(row=1, column=0, padx=55, pady=27)
+name_label = CTkLabel(left_frame, text='Name', font=('aerial', 20, 'bold'), text_color='gray23')
+name_label.grid(row=1, column=0, padx=20, pady=10, sticky="w")
 
-phone_label = CTkLabel(left_frame, text='Phone', fg_color='cadet blue', text_color='white', font=('aerial', 20, 'bold'))
-phone_label.grid(row=2, column=0, padx=55, pady=27)
+phone_label = CTkLabel(left_frame, text='Phone', font=('aerial', 20, 'bold'), text_color='gray23')
+phone_label.grid(row=2, column=0, padx=20, pady=10, sticky="w")
 
-role_label = CTkLabel(left_frame, text='Role', fg_color='cadet blue', text_color='white', font=('aerial', 20, 'bold'))
-role_label.grid(row=3, column=0, padx=55, pady=27)
+role_label = CTkLabel(left_frame, text='Role', font=('aerial', 20, 'bold'), text_color='gray23')
+role_label.grid(row=3, column=0, padx=20, pady=10, sticky="w")
 
-gender_label = CTkLabel(left_frame, text='Gender', fg_color='cadet blue', text_color='white', font=('aerial', 20, 'bold'))
-gender_label.grid(row=4, column=0, padx=55, pady=27)
+gender_label = CTkLabel(left_frame, text='Gender', font=('aerial', 20, 'bold'), text_color='gray23')
+gender_label.grid(row=4, column=0, padx=20, pady=10, sticky="w")
 
-salary_label = CTkLabel(left_frame, text='Salary', fg_color='cadet blue', text_color='white', font=('aerial', 20, 'bold'))
-salary_label.grid(row=5, column=0, padx=55, pady=27)
+salary_label = CTkLabel(left_frame, text='Salary', font=('aerial', 20, 'bold'), text_color='gray23')
+salary_label.grid(row=5, column=0, padx=20, pady=10, sticky="w")
 
 #Entries and comboboxes:
 id_entry = CTkEntry(left_frame, font=('helvetica', 18, 'bold'), fg_color='white', text_color='black', width=300, height=45)
