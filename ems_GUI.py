@@ -34,8 +34,6 @@ window.title("Employee Management System")
 window.grid_rowconfigure(0, weight=1)    #Header
 window.grid_rowconfigure(1, weight=4)    #Main content
 window.grid_rowconfigure(2, weight=1)    #Buttons
-window.grid_columnconfigure(0, weight=1) #Left frame
-window.grid_columnconfigure(1, weight=2) #Right frame
 
 #Header image:
 image_1 = CTkImage(Image.open("1.png"), size=(920, 200))
