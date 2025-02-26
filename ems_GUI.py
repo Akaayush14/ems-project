@@ -26,6 +26,34 @@ def add_employee_gui():
     except Exception as e:
         messagebox.showerror("Error", f"An error occurred: {e}")
 
+#It calls update_employee() function to modify data from the database.
+#Update Employee GUI Functionality
+def update_employee_gui():
+    try:
+        employee_id = id_entry.get()
+        if not employee_id:
+            messagebox.showerror("Error", "No employee selected!")
+            return
+
+        name = name_entry.get()
+        phone = phone_entry.get()
+        role = role_box.get()
+        gender = gender_box.get()
+        salary = salary_entry.get()
+
+        #Here, validating the inputs:
+        if not all([name, phone, role, gender, salary]):
+            messagebox.showerror("Error", "All fields are required!")
+            return
+
+        # Here, updating employee to the database:
+        update_employee(employee_id, name, phone, role, gender, salary)
+        messagebox.showinfo("Success", "Employee updated successfully!")
+        show_all()
+
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
+
 #It calls delete_employee() function to delete the employee from the database.
 def delete_employee_gui():
     try:
@@ -205,11 +233,11 @@ add_button = CTkButton(button_frame, text='Add Employee', height=37,command =add
 add_button.grid(row=0, column=1, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(1, weight=1)
 
-update_button = CTkButton(button_frame, text='Update Employee',height=37)
+update_button = CTkButton(button_frame, text='Update Employee',command =update_employee_gui, height=37)
 update_button.grid(row=0, column=2, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(2, weight=1)
 
-delete_button = CTkButton(button_frame, text='Delete Employee', command=delete_employee_gui, height=37)
+delete_button = CTkButton(button_frame, text='Delete Employee',command=delete_employee_gui, height=37)
 delete_button.grid(row=0, column=3, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(3, weight=1)
 
