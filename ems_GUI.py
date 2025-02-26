@@ -3,6 +3,29 @@ from PIL import Image
 from tkinter import ttk, messagebox
 from database import * #It imports all functions from database.py
 
+#GUI functionality/core functionality: Recieves data from the functions above.
+#It calls the add_employee() functions to insert data into the database.
+def add_employee_gui():
+    try:
+        name = name_entry.get()
+        phone = phone_entry.get()
+        role = role_box.get()
+        gender = gender_box.get()
+        salary = salary_entry.get()
+
+       #Here, validating the inputs:
+        if not all([name, phone, role, gender, salary]):
+            messagebox.showerror("Error", "All fields are required!")
+            return
+
+        #Here, adding employee to the database:
+        add_employee(name, phone, role, gender, salary)
+        messagebox.showinfo("Success", "Employee added successfully!")
+        
+
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
+
 #It calls delete_employee() function to delete the employee from the database.
 def delete_employee_gui():
     try:
@@ -178,11 +201,11 @@ new_button = CTkButton(button_frame, text='New employee', height=37)
 new_button.grid(row=0, column=0, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(0, weight=1)
 
-add_button = CTkButton(button_frame, text='Add Employee', height=37)
+add_button = CTkButton(button_frame, text='Add Employee', height=37,command =add_employee_gui)
 add_button.grid(row=0, column=1, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(1, weight=1)
 
-update_button = CTkButton(button_frame, text='Update Employee', height=37)
+update_button = CTkButton(button_frame, text='Update Employee',height=37)
 update_button.grid(row=0, column=2, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(2, weight=1)
 

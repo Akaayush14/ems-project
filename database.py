@@ -29,6 +29,22 @@ def connect_db():
         messagebox.showerror("Database Error", f"Failed to connect to the database: {e}")
         return None
     
+#Function to add an employee record:
+def add_employee(name, phone, role, gender, salary):
+    conn = connect_db()
+    if conn is not None:
+        try:
+            cursor = conn.cursor()
+            cursor.execute('''
+            INSERT INTO employees (name, phone, role, gender, salary)
+            VALUES (?, ?, ?, ?, ?)
+            ''', (name, phone, role, gender, salary))
+            conn.commit()
+        except sqlite3.Error as e:
+            messagebox.showerror("Database Error", f"Failed to add employee: {e}")
+        finally:
+            conn.close()
+    
 #Function to bring or retrieve all employees data from the database(employee.db)
 def fetch_all_employees():
     conn = connect_db()
@@ -57,3 +73,4 @@ def delete_employee(employee_id):
             messagebox.showerror("Database Error", f"Failed to delete employee: {e}")
         finally:
             conn.close()
+
