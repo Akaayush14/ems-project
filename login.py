@@ -10,7 +10,7 @@ def login():
     if username_entry.get() == '' or password_entry.get() == '':
         messagebox.showerror('Error', 'Fields cannot be empty')
     elif username_entry.get() == 'falcon' and password_entry.get() == '1234':
-        messagebox.showerror('Success', 'Successful login')
+        messagebox.showinfo('Success', 'Successful login')
         root.destroy()
         import ems_GUI  
     else:
