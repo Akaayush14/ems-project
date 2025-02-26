@@ -74,27 +74,28 @@ salary_label = CTkLabel(left_frame, text='Salary', font=('aerial', 20, 'bold'), 
 salary_label.grid(row=5, column=0, padx=20, pady=10, sticky="w")
 
 #Entries and comboboxes:
-id_entry = CTkEntry(left_frame, font=('helvetica', 18, 'bold'), fg_color='white', text_color='black', width=300, height=45)
-id_entry.grid(row=0, column=1, padx=55, pady=27)
+id_entry = CTkEntry(left_frame, fg_color='white', text_color='black', height=33)
+id_entry.grid(row=0, column=1, padx=20, pady=10, sticky="ew")
 
-name_entry = CTkEntry(left_frame, font=('helvetica', 18, 'bold'), fg_color='white', text_color='black', width=300, height=45)
-name_entry.grid(row=1, column=1, padx=55, pady=27)
+name_entry = CTkEntry(left_frame, fg_color='white', text_color='black', height=33)
+name_entry.grid(row=1, column=1, padx=20, pady=10, sticky="ew")
 
-phone_entry = CTkEntry(left_frame, font=('helvetica', 18, 'bold'), fg_color='white', text_color='black', width=300, height=45)
-phone_entry.grid(row=2, column=1, padx=55, pady=27)
+phone_entry = CTkEntry(left_frame, fg_color='white', text_color='black', height=33)
+phone_entry.grid(row=2, column=1, padx=20, pady=10, sticky="ew")
 
-role_options = ['Business Analyst', 'Cloud Architect', 'Relational Manager', 'Data Scientist', 'DevOps Engineer', 'IT consultant', 'Network Engineer', 'Software Engineer', 'UX/UI Designer', 'Web Developer']
-role_box = CTkComboBox(left_frame, values=role_options, font=('helvetica', 18, 'bold'), fg_color='white', text_color='black', state='readonly', width=300, height=45)
-role_box.grid(row=3, column=1, padx=55, pady=27)
+role_options = ['Business Analyst', 'Cloud Architect', 'Relational Manager', 'Data Scientist', 'DevOps Engineer', 'IT consultant',
+                'Network Engineer', 'Software Engineer', 'UX/UI Designer', 'Web Developer']
+role_box = CTkComboBox(left_frame, values=role_options, state='readonly', fg_color='white', text_color='black', height=33)
+role_box.grid(row=3, column=1, padx=20, pady=10, sticky="ew")
 role_box.set(role_options[0])
 
 gender_options = ['Male', 'Female', 'Others']
-gender_box = CTkComboBox(left_frame, values=gender_options, font=('helvetica', 18, 'bold'), fg_color='white', text_color='black', state='readonly', width=300, height=45)
-gender_box.grid(row=4, column=1, padx=55, pady=27)
+gender_box = CTkComboBox(left_frame, values=gender_options, state='readonly', fg_color='white', text_color='black', height=33)
+gender_box.grid(row=4, column=1, padx=20, pady=10, sticky="ew")
 gender_box.set(gender_options[0])
 
-salary_entry = CTkEntry(left_frame, font=('helvetica', 18, 'bold'), fg_color='white', text_color='black', width=300, height=45)
-salary_entry.grid(row=5, column=1, padx=55, pady=27)
+salary_entry = CTkEntry(left_frame, fg_color='white', text_color='black', height=33)
+salary_entry.grid(row=5, column=1, padx=20, pady=10, sticky="ew")
 
 #####################################################################Right frame(frame-2)################################################################################
 right_frame = CTkFrame(window, fg_color="light grey")
