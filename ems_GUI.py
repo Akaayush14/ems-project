@@ -1,12 +1,17 @@
 from customtkinter import *
 from PIL import Image
-from tkinter import ttk
+from tkinter import ttk, messagebox
 
-window = CTk()
-#Fullscreen window:
+
+#Function to open full screen window:
 def maximize_window():
-    window.state('zoomed')
-window.after(10, maximize_window)
+    try:
+        window.state('zoomed')
+    except Exception as e:
+        messagebox.showerror("Error", f"Are you sure you want to exit?")
+
+#Initializing the main window:
+window = CTk()
 
 #Background colour of window:                               
 window.configure(fg_color="dark sea green")
