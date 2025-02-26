@@ -3,6 +3,22 @@ from PIL import Image
 from tkinter import ttk, messagebox
 from database import * #It imports all functions from database.py
 
+#It calls delete_employee() function to delete the employee from the database.
+def delete_employee_gui():
+    try:
+        selected_item = tree.selection()
+        if not selected_item:
+            messagebox.showerror("Error", "Select an employee to delete!")
+            return
+
+        employee_id = tree.item(selected_item)['values'][0]
+        delete_employee(employee_id)
+        messagebox.showinfo("Success", "Employee deleted successfully!")
+        show_all()
+
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
+
 #It shows all the data present in the database:
 def show_all():
     try:
@@ -170,7 +186,7 @@ update_button = CTkButton(button_frame, text='Update Employee', height=37)
 update_button.grid(row=0, column=2, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(2, weight=1)
 
-delete_button = CTkButton(button_frame, text='Delete Employee', height=37)
+delete_button = CTkButton(button_frame, text='Delete Employee', command=delete_employee_gui, height=37)
 delete_button.grid(row=0, column=3, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(3, weight=1)
 
