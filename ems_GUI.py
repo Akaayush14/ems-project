@@ -10,8 +10,19 @@ def maximize_window():
     except Exception as e:
         messagebox.showerror("Error", f"Are you sure you want to exit?")
 
+#Function to show confirmation when close button is clicked:
+def on_closing():
+    if messagebox.askyesno("Exit", "Are you sure you want to exit?"):
+        window.destroy()
+
 #Initializing the main window:
 window = CTk()
+
+#After 10 milliseconds the window will open in full screen.
+window.after(10, maximize_window)
+
+#It binds the close button to the on_closing function:
+window.protocol("WM_DELETE_WINDOW", on_closing)
 
 #Background colour of window:                               
 window.configure(fg_color="dark sea green")
