@@ -99,9 +99,10 @@ gender_box.set(gender_options[0])
 salary_entry = CTkEntry(left_frame, fg_color='white', text_color='black', height=33)
 salary_entry.grid(row=5, column=1, padx=20, pady=10, sticky="ew")
 
-#####################################################################Right frame(frame-2)################################################################################
-right_frame = CTkFrame(window, fg_color="light grey")
-right_frame.place(relx=0.35, rely=0.25, relwidth=0.64, relheight=0.63)
+#################################################################Right Frame (Search & Table)############################################################################
+right_frame = CTkFrame(window, fg_color="gra70", height=70)
+right_frame.grid(row=1, column=1, sticky="nsew", padx=10, pady=10)
+right_frame.grid_columnconfigure(0, weight=1) #Makes sure that the frame can expand to fill available space in the column.
 
 #Entries and comboboxes:
 search_options = ['Id', 'Name', 'Phone', 'Role', 'Gender', 'Salary']
