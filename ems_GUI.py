@@ -99,26 +99,24 @@ gender_box.set(gender_options[0])
 salary_entry = CTkEntry(left_frame, fg_color='white', text_color='black', height=33)
 salary_entry.grid(row=5, column=1, padx=20, pady=10, sticky="ew")
 
-#################################################################Right Frame (Search & Table)############################################################################
-right_frame = CTkFrame(window, fg_color="gra70", height=70)
+#######################################################################Right Frame#######################################################################################
+right_frame = CTkFrame(window, fg_color="gray70", height=70)
 right_frame.grid(row=1, column=1, sticky="nsew", padx=10, pady=10)
 right_frame.grid_columnconfigure(0, weight=1) #Makes sure that the frame can expand to fill available space in the column.
 
-#Entries and comboboxes:
-search_options = ['Id', 'Name', 'Phone', 'Role', 'Gender', 'Salary']
-search_box = CTkComboBox(right_frame, values=search_options, font=('helvetica', 15, 'bold'), fg_color='white', text_color='black', state='readonly', width=210)
-search_box.grid(row=0, column=0, padx=25, pady=5)
-search_box.set('Search By')
+#Search and buttons:
+search_box = CTkComboBox(right_frame, values=['Id', 'Name', 'Phone', 'Role', 'Gender', 'Salary'], state='readonly', fg_color='white', text_color='black', height=35)
+search_box.set('Search By')#sets the box with the text 'Search By'.
+search_box.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
 
-search_Entry = CTkEntry(right_frame, font=('helvetica', 15, 'bold'), fg_color='white', text_color='black', width=210)
-search_Entry.grid(row=0, column=1, padx=35, pady=5)
+search_Entry = CTkEntry(right_frame, fg_color='white', text_color='black', height=35)
+search_Entry.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
 
-#Buttons:
-search_button = CTkButton(right_frame, text="Search", width=210)
-search_button.grid(row=0, column=2, padx=30, pady=5)
+search_button = CTkButton(right_frame, text="Search", height=35)
+search_button.grid(row=0, column=2, padx=5, pady=5, sticky="ew")
 
-showall_button = CTkButton(right_frame, text="Show All", width=210)
-showall_button.grid(row=0, column=3, padx=30, pady=5)
+showall_button = CTkButton(right_frame, text="Show All", height=35)
+showall_button.grid(row=0, column=3, padx=5, pady=5, sticky="ew")
 
 #Adding a tree:
 tree = ttk.Treeview(right_frame, height=38)
