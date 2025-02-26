@@ -142,30 +142,28 @@ scrollbar.configure(command=tree.yview)       #It will link scrollbar to the tre
 #It lifts scrollbar infront of the treeview.
 scrollbar.lift()
 
-############################################################################Below frame(Frame-3)#########################################################################
-button_frame = CTkFrame(window, fg_color="cadet blue")
-button_frame.grid(row=2, column=0)  # Positioned at the bottom
+##################################################################Bottom Frame (Buttons)#################################################################################
+button_frame = CTkFrame(window, fg_color="dark sea green")
+button_frame.grid(row=2, column=0, columnspan=2, sticky="ew", padx=10, pady=10) 
 
-#Buttons:
-#Lambda function will make the function effective when new button is pressed, not when the code is run.
-new_button = CTkButton(button_frame, text='New Employee', font=('aerial', 15, 'bold'), width=200, height=35, corner_radius=15)
-new_button.grid(row=0, column=0, padx=75, pady=20)
+new_button = CTkButton(button_frame, text='New employee', command=lambda: clear(True), height=37)
+new_button.grid(row=0, column=0, padx=20, pady=10, sticky="ew")
+button_frame.grid_columnconfigure(0, weight=1)
 
-add_button = CTkButton(button_frame, text='Add Employee', font=('aerial', 15, 'bold'), width=200, height=35, corner_radius=15)
-add_button.grid(row=0, column=1, padx=70, pady=20)
+add_button = CTkButton(button_frame, text='Add Employee', height=37)
+add_button.grid(row=0, column=1, padx=20, pady=10, sticky="ew")
+button_frame.grid_columnconfigure(1, weight=1)
 
-update_button = CTkButton(button_frame, text='Update Employee', font=('aerial', 15, 'bold'), width=200, height=35, corner_radius=15)
-update_button.grid(row=0, column=2, padx=70, pady=20)
+update_button = CTkButton(button_frame, text='Update Employee', height=37)
+update_button.grid(row=0, column=2, padx=20, pady=10, sticky="ew")
+button_frame.grid_columnconfigure(2, weight=1)
 
-delete_button = CTkButton(button_frame, text='Delete Employee', font=('aerial', 15, 'bold'), width=200, height=35, corner_radius=15)
-delete_button.grid(row=0, column=3, padx=70, pady=20)
+delete_button = CTkButton(button_frame, text='Delete Employee', height=37)
+delete_button.grid(row=0, column=3, padx=20, pady=10, sticky="ew")
+button_frame.grid_columnconfigure(3, weight=1)
 
-deleteall_button = CTkButton(button_frame, text='Delete All', font=('aerial', 15, 'bold'), width=200, height=35, corner_radius=15)
-deleteall_button.grid(row=0, column=4, padx=50, pady=20)
-
-#It will ensure that frames and widgets scale correctly with different screen sizes.
-window.grid_rowconfigure(1, weight=1)
-window.grid_columnconfigure(0, weight=1)
-
+deleteall_button = CTkButton(button_frame, text='Delete All', height=37)
+deleteall_button.grid(row=0, column=4, padx=20, pady=10, sticky="ew")
+button_frame.grid_columnconfigure(4, weight=1)
 
 window.mainloop()
