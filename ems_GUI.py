@@ -54,6 +54,35 @@ def update_employee_gui():
     except Exception as e:
         messagebox.showerror("Error", f"An error occurred: {e}")
 
+#It calls database query to fetch employee data based on the selected option and entered data in the search entry box.
+def search_employee():
+    try:
+        search_by = search_box.get()
+        search_value = search_Entry.get().strip()
+
+        if search_by == "Search By" or not search_value:
+            messagebox.showerror("Error", "Select a search category and enter a value!")
+            return
+
+        conn = connect_db()
+        cursor = conn.cursor()
+
+        #Here, using lowercase for case-insensitive searching:
+        if search_by.lower() == "gender":
+            cursor.execute(f'SELECT * FROM employees WHERE LOWER({search_by}) = LOWER(?)', (search_value,))
+        else:
+            cursor.execute(f'SELECT * FROM employees WHERE LOWER({search_by}) LIKE LOWER(?)', ('%' + search_value + '%',))
+
+        rows = cursor.fetchall()
+        conn.close()
+
+        tree.delete(*tree.get_children())#It clears the tree.
+        for employee in rows:
+            tree.insert("", END, values=employee)
+
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
+
 #It calls delete_employee() function to delete the employee from the database.
 def delete_employee_gui():
     try:
@@ -191,7 +220,7 @@ search_box.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
 search_Entry = CTkEntry(right_frame, fg_color='white', text_color='black', height=35)
 search_Entry.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
 
-search_button = CTkButton(right_frame, text="Search", height=35)
+search_button = CTkButton(right_frame, text="Search",command=search_employee, height=35)
 search_button.grid(row=0, column=2, padx=5, pady=5, sticky="ew")
 
 showall_button = CTkButton(right_frame, text="Show All", command=show_all, height=35)
