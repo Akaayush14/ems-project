@@ -1,7 +1,19 @@
 from customtkinter import *
 from PIL import Image
 from tkinter import ttk, messagebox
+from database import * #It imports all functions from database.py
 
+#It shows all the data present in the database:
+def show_all():
+    try:
+        for row in tree.get_children():
+            tree.delete(row)
+        employees = fetch_all_employees()
+        for employee in employees:
+            tree.insert("", END, values=employee)
+
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
 
 #Function to open full screen window:
 def maximize_window():
@@ -115,7 +127,7 @@ search_Entry.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
 search_button = CTkButton(right_frame, text="Search", height=35)
 search_button.grid(row=0, column=2, padx=5, pady=5, sticky="ew")
 
-showall_button = CTkButton(right_frame, text="Show All", height=35)
+showall_button = CTkButton(right_frame, text="Show All", command=show_all, height=35)
 showall_button.grid(row=0, column=3, padx=5, pady=5, sticky="ew")
 
 #Treeview: Using for loop to place all headings in tree through grid placement method.
