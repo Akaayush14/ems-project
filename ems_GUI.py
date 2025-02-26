@@ -24,15 +24,18 @@ window.after(10, maximize_window)
 #It binds the close button to the on_closing function:
 window.protocol("WM_DELETE_WINDOW", on_closing)
 
-#Background colour of window:                               
+#Setting window background:                               
 window.configure(fg_color="dark sea green")
 
 #Window title:
 window.title("Employee Management System")
 
-window.grid_rowconfigure(0, weight=0)  # Prevents image from resizing
-window.grid_rowconfigure(1, weight=1)  # Allows left_frame and right_frame to take space
-window.grid_rowconfigure(2, weight=0)  # Keeps button_frame at bottom without affecting row 0
+#Specifying rows and columns when window is resized.
+window.grid_rowconfigure(0, weight=1)    #Header
+window.grid_rowconfigure(1, weight=4)    #Main content
+window.grid_rowconfigure(2, weight=1)    #Buttons
+window.grid_columnconfigure(0, weight=1) #Left frame
+window.grid_columnconfigure(1, weight=2) #Right frame
 
 #Header image:
 image_1 = CTkImage(Image.open("1.png"), size=(920, 200))
