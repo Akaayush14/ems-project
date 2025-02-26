@@ -118,50 +118,31 @@ search_button.grid(row=0, column=2, padx=5, pady=5, sticky="ew")
 showall_button = CTkButton(right_frame, text="Show All", height=35)
 showall_button.grid(row=0, column=3, padx=5, pady=5, sticky="ew")
 
-#Adding a tree:
-tree = ttk.Treeview(right_frame, height=38)
-tree.grid(row=1, column=0, columnspan=4, sticky="nsew")
-
-#Accessing scrollbar class:
-scrollbar = ttk.Scrollbar(right_frame, orient=VERTICAL)
-scrollbar.place(relx=0.984, relheight=1)
-
-#Linking the scrollbar to the Treeview:
-tree.configure(yscrollcommand=scrollbar.set)
-scrollbar.configure(command=tree.yview)
-
-#Bringing the scrollbar to the front:
-scrollbar.lift()
-
-#Columns in tree:
-tree['columns'] = ('Id', 'Name', 'Phone', 'Role', 'Gender', 'Salary')
-
-#Headings in tree:
-tree.heading('Id', text='Id')
-tree.heading('Name', text='Name')
-tree.heading('Phone', text='Phone')
-tree.heading('Role', text='Role')
-tree.heading('Gender', text='Gender')
-tree.heading('Salary', text='Salary')
-
-#Process to remove extra columns:
-tree.config(show='headings')
-
-#Changing widths of columns:
-tree.column('Id', anchor=CENTER, width=180)
-tree.column('Name',width=180)
-tree.column('Phone', width=180)
-tree.column('Role', width=200)
-tree.column('Gender', width=180)
-tree.column('Salary', width=180)
+#Treeview: Using for loop to place all headings in tree through grid placement method.
+column = ('Id', 'Name', 'Phone', 'Role', 'Gender', 'Salary')
+tree = ttk.Treeview(right_frame, columns=column, show='headings', height=44)
+for i in column:
+    tree.heading(i, text=i)
+    tree.column(i, anchor=CENTER, width=120)
+tree.grid(row=1, column=0, columnspan=4, sticky="nsew", padx=0, pady=0)
 
 #Styling the tree:
 style = ttk.Style()
 
 #Changing font of treeview heading:
-style.configure('Treeview.Heading', font=("aerial", 18, "bold"))
+style.configure('Treeview.Heading', font=("Arial", 20, "bold"))   #Set font size for headings.
+style.configure('Treeview', font=('Arial', 16))  #Set font size for rows.
 
-# ###########################################################################Below frame(Frame-3)#########################################################################
+#Linking the scrollbar to the Treeview:
+scrollbar = ttk.Scrollbar(right_frame, orient=VERTICAL, command=tree.yview)
+tree.configure(yscrollcommand=scrollbar.set)  #It will set scrollbar size according to the number of data in the treeview.
+scrollbar.grid(row=1, column=4, sticky="ns", padx=1) 
+scrollbar.configure(command=tree.yview)       #It will link scrollbar to the tree.
+
+#It lifts scrollbar infront of the treeview.
+scrollbar.lift()
+
+############################################################################Below frame(Frame-3)#########################################################################
 button_frame = CTkFrame(window, fg_color="cadet blue")
 button_frame.grid(row=2, column=0)  # Positioned at the bottom
 
