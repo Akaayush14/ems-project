@@ -21,12 +21,12 @@ window.grid_rowconfigure(2, weight=0)  # Keeps button_frame at bottom without af
 #GUI image:
 image_1 = CTkImage(Image.open("1.png"), size=(920, 200))
 image_label_1 = CTkLabel(window, image=image_1, text=" ", fg_color="white", width=920, height=200) 
-image_label_1.grid(row=0, column=0, sticky="nw", columnspan=2)
+image_label_1.grid(row=0, column=0, columnspan=2, sticky="nw")
 
 
 image_2 = CTkImage(Image.open("2.png"), size=(920, 200))
-image_label_2 = CTkLabel(window, image=image_2, text=" ", fg_color="white", width=920, height=200) 
-image_label_2.place(relx=1, rely=0, anchor="ne")
+image_label_2 = CTkLabel(window, image=image_2, text=" ") 
+image_label_2.grid(row=0, column=1, columnspan=1, sticky="ne")
 
 ################################################################Left frame(frame-1)######################################################################################
 left_frame = CTkFrame(window, fg_color="cadet blue", width=940, height=600)
