@@ -1,22 +1,41 @@
 from customtkinter import *
 from PIL import Image
-from tkinter import ttk
+from tkinter import ttk, messagebox
 
-window = CTk()
-#Fullscreen window:
+
+#Function to open full screen window:
 def maximize_window():
-    window.state('zoomed')
+    try:
+        window.state('zoomed')
+    except Exception as e:
+        messagebox.showerror("Error", f"Are you sure you want to exit?")
+
+#Function to show confirmation when close button is clicked:
+def on_closing():
+    if messagebox.askyesno("Exit", "Are you sure you want to exit?"):
+        window.destroy()
+
+#Initializing the main window:
+window = CTk()
+
+#After 10 milliseconds the window will open in full screen.
 window.after(10, maximize_window)
 
-#Background colour of window:                               
+#It binds the close button to the on_closing function:
+window.protocol("WM_DELETE_WINDOW", on_closing)
+
+#Setting window background:                               
 window.configure(fg_color="dark sea green")
 
 #Window title:
 window.title("Employee Management System")
 
-window.grid_rowconfigure(0, weight=0)  # Prevents image from resizing
-window.grid_rowconfigure(1, weight=1)  # Allows left_frame and right_frame to take space
-window.grid_rowconfigure(2, weight=0)  # Keeps button_frame at bottom without affecting row 0
+#Specifying rows and columns when window is resized.
+window.grid_rowconfigure(0, weight=1)    #Header
+window.grid_rowconfigure(1, weight=4)    #Main content
+window.grid_rowconfigure(2, weight=1)    #Buttons
+window.grid_columnconfigure(0, weight=1) #Left frame
+window.grid_columnconfigure(1, weight=2) #Right frame
 
 #Header image:
 image_1 = CTkImage(Image.open("1.png"), size=(920, 200))
@@ -57,115 +76,94 @@ salary_label = CTkLabel(left_frame, text='Salary', font=('aerial', 20, 'bold'), 
 salary_label.grid(row=5, column=0, padx=20, pady=10, sticky="w")
 
 #Entries and comboboxes:
-id_entry = CTkEntry(left_frame, font=('helvetica', 18, 'bold'), fg_color='white', text_color='black', width=300, height=45)
-id_entry.grid(row=0, column=1, padx=55, pady=27)
+id_entry = CTkEntry(left_frame, fg_color='white', text_color='black', height=33)
+id_entry.grid(row=0, column=1, padx=20, pady=10, sticky="ew")
 
-name_entry = CTkEntry(left_frame, font=('helvetica', 18, 'bold'), fg_color='white', text_color='black', width=300, height=45)
-name_entry.grid(row=1, column=1, padx=55, pady=27)
+name_entry = CTkEntry(left_frame, fg_color='white', text_color='black', height=33)
+name_entry.grid(row=1, column=1, padx=20, pady=10, sticky="ew")
 
-phone_entry = CTkEntry(left_frame, font=('helvetica', 18, 'bold'), fg_color='white', text_color='black', width=300, height=45)
-phone_entry.grid(row=2, column=1, padx=55, pady=27)
+phone_entry = CTkEntry(left_frame, fg_color='white', text_color='black', height=33)
+phone_entry.grid(row=2, column=1, padx=20, pady=10, sticky="ew")
 
-role_options = ['Business Analyst', 'Cloud Architect', 'Relational Manager', 'Data Scientist', 'DevOps Engineer', 'IT consultant', 'Network Engineer', 'Software Engineer', 'UX/UI Designer', 'Web Developer']
-role_box = CTkComboBox(left_frame, values=role_options, font=('helvetica', 18, 'bold'), fg_color='white', text_color='black', state='readonly', width=300, height=45)
-role_box.grid(row=3, column=1, padx=55, pady=27)
+role_options = ['Business Analyst', 'Cloud Architect', 'Relational Manager', 'Data Scientist', 'DevOps Engineer', 'IT consultant',
+                'Network Engineer', 'Software Engineer', 'UX/UI Designer', 'Web Developer']
+role_box = CTkComboBox(left_frame, values=role_options, state='readonly', fg_color='white', text_color='black', height=33)
+role_box.grid(row=3, column=1, padx=20, pady=10, sticky="ew")
 role_box.set(role_options[0])
 
 gender_options = ['Male', 'Female', 'Others']
-gender_box = CTkComboBox(left_frame, values=gender_options, font=('helvetica', 18, 'bold'), fg_color='white', text_color='black', state='readonly', width=300, height=45)
-gender_box.grid(row=4, column=1, padx=55, pady=27)
+gender_box = CTkComboBox(left_frame, values=gender_options, state='readonly', fg_color='white', text_color='black', height=33)
+gender_box.grid(row=4, column=1, padx=20, pady=10, sticky="ew")
 gender_box.set(gender_options[0])
 
-salary_entry = CTkEntry(left_frame, font=('helvetica', 18, 'bold'), fg_color='white', text_color='black', width=300, height=45)
-salary_entry.grid(row=5, column=1, padx=55, pady=27)
+salary_entry = CTkEntry(left_frame, fg_color='white', text_color='black', height=33)
+salary_entry.grid(row=5, column=1, padx=20, pady=10, sticky="ew")
 
-#####################################################################Right frame(frame-2)################################################################################
-right_frame = CTkFrame(window, fg_color="light grey")
-right_frame.place(relx=0.35, rely=0.25, relwidth=0.64, relheight=0.63)
+#######################################################################Right Frame#######################################################################################
+right_frame = CTkFrame(window, fg_color="gray70", height=70)
+right_frame.grid(row=1, column=1, sticky="nsew", padx=10, pady=10)
+right_frame.grid_columnconfigure(0, weight=1) #Makes sure that the frame can expand to fill available space in the column.
 
-#Entries and comboboxes:
-search_options = ['Id', 'Name', 'Phone', 'Role', 'Gender', 'Salary']
-search_box = CTkComboBox(right_frame, values=search_options, font=('helvetica', 15, 'bold'), fg_color='white', text_color='black', state='readonly', width=210)
-search_box.grid(row=0, column=0, padx=25, pady=5)
-search_box.set('Search By')
+#Search and buttons:
+search_box = CTkComboBox(right_frame, values=['Id', 'Name', 'Phone', 'Role', 'Gender', 'Salary'], state='readonly', fg_color='white', text_color='black', height=35)
+search_box.set('Search By')#sets the box with the text 'Search By'.
+search_box.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
 
-search_Entry = CTkEntry(right_frame, font=('helvetica', 15, 'bold'), fg_color='white', text_color='black', width=210)
-search_Entry.grid(row=0, column=1, padx=35, pady=5)
+search_Entry = CTkEntry(right_frame, fg_color='white', text_color='black', height=35)
+search_Entry.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
 
-#Buttons:
-search_button = CTkButton(right_frame, text="Search", width=210)
-search_button.grid(row=0, column=2, padx=30, pady=5)
+search_button = CTkButton(right_frame, text="Search", height=35)
+search_button.grid(row=0, column=2, padx=5, pady=5, sticky="ew")
 
-showall_button = CTkButton(right_frame, text="Show All", width=210)
-showall_button.grid(row=0, column=3, padx=30, pady=5)
+showall_button = CTkButton(right_frame, text="Show All", height=35)
+showall_button.grid(row=0, column=3, padx=5, pady=5, sticky="ew")
 
-#Adding a tree:
-tree = ttk.Treeview(right_frame, height=38)
-tree.grid(row=1, column=0, columnspan=4, sticky="nsew")
-
-#Accessing scrollbar class:
-scrollbar = ttk.Scrollbar(right_frame, orient=VERTICAL)
-scrollbar.place(relx=0.984, relheight=1)
-
-#Linking the scrollbar to the Treeview:
-tree.configure(yscrollcommand=scrollbar.set)
-scrollbar.configure(command=tree.yview)
-
-#Bringing the scrollbar to the front:
-scrollbar.lift()
-
-#Columns in tree:
-tree['columns'] = ('Id', 'Name', 'Phone', 'Role', 'Gender', 'Salary')
-
-#Headings in tree:
-tree.heading('Id', text='Id')
-tree.heading('Name', text='Name')
-tree.heading('Phone', text='Phone')
-tree.heading('Role', text='Role')
-tree.heading('Gender', text='Gender')
-tree.heading('Salary', text='Salary')
-
-#Process to remove extra columns:
-tree.config(show='headings')
-
-#Changing widths of columns:
-tree.column('Id', anchor=CENTER, width=180)
-tree.column('Name',width=180)
-tree.column('Phone', width=180)
-tree.column('Role', width=200)
-tree.column('Gender', width=180)
-tree.column('Salary', width=180)
+#Treeview: Using for loop to place all headings in tree through grid placement method.
+column = ('Id', 'Name', 'Phone', 'Role', 'Gender', 'Salary')
+tree = ttk.Treeview(right_frame, columns=column, show='headings', height=44)
+for i in column:
+    tree.heading(i, text=i)
+    tree.column(i, anchor=CENTER, width=120)
+tree.grid(row=1, column=0, columnspan=4, sticky="nsew", padx=0, pady=0)
 
 #Styling the tree:
 style = ttk.Style()
 
 #Changing font of treeview heading:
-style.configure('Treeview.Heading', font=("aerial", 18, "bold"))
+style.configure('Treeview.Heading', font=("Arial", 20, "bold"))   #Set font size for headings.
+style.configure('Treeview', font=('Arial', 16))  #Set font size for rows.
 
-# ###########################################################################Below frame(Frame-3)#########################################################################
-button_frame = CTkFrame(window, fg_color="cadet blue")
-button_frame.grid(row=2, column=0)  # Positioned at the bottom
+#Linking the scrollbar to the Treeview:
+scrollbar = ttk.Scrollbar(right_frame, orient=VERTICAL, command=tree.yview)
+tree.configure(yscrollcommand=scrollbar.set)  #It will set scrollbar size according to the number of data in the treeview.
+scrollbar.grid(row=1, column=4, sticky="ns", padx=1) 
+scrollbar.configure(command=tree.yview)       #It will link scrollbar to the tree.
 
-#Buttons:
-#Lambda function will make the function effective when new button is pressed, not when the code is run.
-new_button = CTkButton(button_frame, text='New Employee', font=('aerial', 15, 'bold'), width=200, height=35, corner_radius=15)
-new_button.grid(row=0, column=0, padx=75, pady=20)
+#It lifts scrollbar infront of the treeview.
+scrollbar.lift()
 
-add_button = CTkButton(button_frame, text='Add Employee', font=('aerial', 15, 'bold'), width=200, height=35, corner_radius=15)
-add_button.grid(row=0, column=1, padx=70, pady=20)
+##################################################################Bottom Frame (Buttons)#################################################################################
+button_frame = CTkFrame(window, fg_color="dark sea green")
+button_frame.grid(row=2, column=0, columnspan=2, sticky="ew", padx=10, pady=10) 
 
-update_button = CTkButton(button_frame, text='Update Employee', font=('aerial', 15, 'bold'), width=200, height=35, corner_radius=15)
-update_button.grid(row=0, column=2, padx=70, pady=20)
+new_button = CTkButton(button_frame, text='New employee', command=lambda: clear(True), height=37)
+new_button.grid(row=0, column=0, padx=20, pady=10, sticky="ew")
+button_frame.grid_columnconfigure(0, weight=1)
 
-delete_button = CTkButton(button_frame, text='Delete Employee', font=('aerial', 15, 'bold'), width=200, height=35, corner_radius=15)
-delete_button.grid(row=0, column=3, padx=70, pady=20)
+add_button = CTkButton(button_frame, text='Add Employee', height=37)
+add_button.grid(row=0, column=1, padx=20, pady=10, sticky="ew")
+button_frame.grid_columnconfigure(1, weight=1)
 
-deleteall_button = CTkButton(button_frame, text='Delete All', font=('aerial', 15, 'bold'), width=200, height=35, corner_radius=15)
-deleteall_button.grid(row=0, column=4, padx=50, pady=20)
+update_button = CTkButton(button_frame, text='Update Employee', height=37)
+update_button.grid(row=0, column=2, padx=20, pady=10, sticky="ew")
+button_frame.grid_columnconfigure(2, weight=1)
 
-#It will ensure that frames and widgets scale correctly with different screen sizes.
-window.grid_rowconfigure(1, weight=1)
-window.grid_columnconfigure(0, weight=1)
+delete_button = CTkButton(button_frame, text='Delete Employee', height=37)
+delete_button.grid(row=0, column=3, padx=20, pady=10, sticky="ew")
+button_frame.grid_columnconfigure(3, weight=1)
 
+deleteall_button = CTkButton(button_frame, text='Delete All', height=37)
+deleteall_button.grid(row=0, column=4, padx=20, pady=10, sticky="ew")
+button_frame.grid_columnconfigure(4, weight=1)
 
 window.mainloop()
