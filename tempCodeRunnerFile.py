@@ -1,8 +1,5 @@
-update_button = CTkButton(button_frame, text='Update Employee', font=('aerial', 15, 'bold'), width=200, height=35, corner_radius=15)
-update_button.grid(row=0, column=2)
+#calling the on_closing fuction and here the predefined text will tell the tkinter to close the window.
+root.protocol("WM_DELETE_WINDOW", on_closing)
 
-delete_button = CTkButton(button_frame, text='Delete Employee', font=('aerial', 15, 'bold'), width=200, height=35, corner_radius=15)
-delete_button.grid(row=0, column=3)
-
-deleteall_button = CTkButton(button_frame, text='Delete All', font=('aerial', 15, 'bold'), width=200, height=35, corner_radius=15)
-deleteall_button.grid(row=0, column=4)
+#To show a confirmatory window closing message box:
+root.protocol("on_closing") 
