@@ -37,7 +37,7 @@ window.grid_rowconfigure(2, weight=1)    #Buttons
 window.grid_columnconfigure(0, weight=1) #Left frame
 window.grid_columnconfigure(1, weight=2) #Right frame
 
-#Header image:
+#Header Images:
 image_1 = CTkImage(Image.open("1.png"), size=(920, 200))
 image_label_1 = CTkLabel(window, image=image_1, text=" ") 
 image_label_1.grid(row=0, column=0, columnspan=2, sticky="nw")
@@ -146,7 +146,7 @@ scrollbar.lift()
 button_frame = CTkFrame(window, fg_color="dark sea green")
 button_frame.grid(row=2, column=0, columnspan=2, sticky="ew", padx=10, pady=10) 
 
-new_button = CTkButton(button_frame, text='New employee', command=lambda: clear(True), height=37)
+new_button = CTkButton(button_frame, text='New employee', height=37)
 new_button.grid(row=0, column=0, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(0, weight=1)
 
