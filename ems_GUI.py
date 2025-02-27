@@ -3,6 +3,87 @@ from PIL import Image
 from tkinter import ttk, messagebox
 from database import * #It imports all functions from database.py
 
+#GUI functionality/core functionality: Recieves data from the functions above.
+#It calls the add_employee() functions to insert data into the database.
+def add_employee_gui():
+    try:
+        name = name_entry.get()
+        phone = phone_entry.get()
+        role = role_box.get()
+        gender = gender_box.get()
+        salary = salary_entry.get()
+
+       #Here, validating the inputs:
+        if not all([name, phone, role, gender, salary]):
+            messagebox.showerror("Error", "All fields are required!")
+            return
+
+        #Here, adding employee to the database:
+        add_employee(name, phone, role, gender, salary)
+        messagebox.showinfo("Success", "Employee added successfully!")
+        clear()
+        show_all()
+
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
+
+#It calls update_employee() function to modify data from the database.
+#Update Employee GUI Functionality
+def update_employee_gui():
+    try:
+        employee_id = id_entry.get()
+        if not employee_id:
+            messagebox.showerror("Error", "No employee selected!")
+            return
+
+        name = name_entry.get()
+        phone = phone_entry.get()
+        role = role_box.get()
+        gender = gender_box.get()
+        salary = salary_entry.get()
+
+        #Here, validating the inputs:
+        if not all([name, phone, role, gender, salary]):
+            messagebox.showerror("Error", "All fields are required!")
+            return
+
+        # Here, updating employee to the database:
+        update_employee(employee_id, name, phone, role, gender, salary)
+        messagebox.showinfo("Success", "Employee updated successfully!")
+        show_all()
+
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
+
+#It calls database query to fetch employee data based on the selected option and entered data in the search entry box.
+def search_employee():
+    try:
+        search_by = search_box.get()
+        search_value = search_Entry.get().strip()
+
+        if search_by == "Search By" or not search_value:
+            messagebox.showerror("Error", "Select a search category and enter a value!")
+            return
+
+        conn = connect_db()
+        cursor = conn.cursor()
+
+        #Here, using lowercase for case-insensitive searching:
+        if search_by.lower() == "gender":
+            cursor.execute(f'SELECT * FROM employees WHERE LOWER({search_by}) = LOWER(?)', (search_value,))
+        else:
+            cursor.execute(f'SELECT * FROM employees WHERE LOWER({search_by}) LIKE LOWER(?)', ('%' + search_value + '%',))
+
+        rows = cursor.fetchall()
+        conn.close()
+
+        tree.delete(*tree.get_children())#It clears the tree.
+        for employee in rows:
+            tree.insert("", END, values=employee)
+
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
+
 #It calls delete_employee() function to delete the employee from the database.
 def delete_employee_gui():
     try:
@@ -45,14 +126,14 @@ def clear(value=False):
 
     except Exception as e:
         messagebox.showerror("Error", f"An error occurred: {e}")
-
+        
 #Function to open full screen window:
 def maximize_window():
     try:
         window.state('zoomed')
     except Exception as e:
-        messagebox.showerror("Error", f"Are you sure you want to exit?")
-
+        messagebox.showerror("Error", f"An error occurred: {e}")
+    
 #Function to show confirmation when close button is clicked:
 def on_closing():
     if messagebox.askyesno("Exit", "Are you sure you want to exit?"):
@@ -67,7 +148,7 @@ window.after(10, maximize_window)
 #It binds the close button to the on_closing function:
 window.protocol("WM_DELETE_WINDOW", on_closing)
 
-#Setting window background:                               
+#Setting window background:
 window.configure(fg_color="dark sea green")
 
 #Window title:
@@ -82,14 +163,14 @@ window.grid_columnconfigure(1, weight=2) #Right frame
 
 #Header Images:
 image_1 = CTkImage(Image.open("1.png"), size=(920, 200))
-image_label_1 = CTkLabel(window, image=image_1, text=" ") 
+image_label_1 = CTkLabel(window, image=image_1, text=" ")
 image_label_1.grid(row=0, column=0, columnspan=2, sticky="nw")
 
 image_2 = CTkImage(Image.open("2.png"), size=(920, 200))
-image_label_2 = CTkLabel(window, image=image_2, text=" ") 
+image_label_2 = CTkLabel(window, image=image_2, text=" ")
 image_label_2.grid(row=0, column=1, columnspan=1, sticky="ne")
 
-################################################################Left Frame######################################################################################
+################################################################################Left Frame###############################################################################
 left_frame = CTkFrame(window, fg_color="dark sea green")
 left_frame.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
 
@@ -142,12 +223,12 @@ gender_box.set(gender_options[0])
 salary_entry = CTkEntry(left_frame, fg_color='white', text_color='black', height=33)
 salary_entry.grid(row=5, column=1, padx=20, pady=10, sticky="ew")
 
-#######################################################################Right Frame#######################################################################################
-right_frame = CTkFrame(window, fg_color="gray70", height=70)
+#################################################################Right Frame (Search & Table)############################################################################
+right_frame = CTkFrame(window, fg_color="gray70", height=40)
 right_frame.grid(row=1, column=1, sticky="nsew", padx=10, pady=10)
 right_frame.grid_columnconfigure(0, weight=1) #Makes sure that the frame can expand to fill available space in the column.
 
-#Search and buttons:
+#Search:
 search_box = CTkComboBox(right_frame, values=['Id', 'Name', 'Phone', 'Role', 'Gender', 'Salary'], state='readonly', fg_color='white', text_color='black', height=35)
 search_box.set('Search By')#sets the box with the text 'Search By'.
 search_box.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
@@ -155,7 +236,7 @@ search_box.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
 search_Entry = CTkEntry(right_frame, fg_color='white', text_color='black', height=35)
 search_Entry.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
 
-search_button = CTkButton(right_frame, text="Search",command=search_employee, height=35)
+search_button = CTkButton(right_frame, text="Search", command=search_employee, height=35)
 search_button.grid(row=0, column=2, padx=5, pady=5, sticky="ew")
 
 showall_button = CTkButton(right_frame, text="Show All", command=show_all, height=35)
@@ -173,16 +254,16 @@ tree.grid(row=1, column=0, columnspan=4, sticky="nsew", padx=0, pady=0)
 style = ttk.Style()
 
 #Changing font of treeview heading:
-style.configure('Treeview.Heading', font=("Arial", 20, "bold"))   #Set font size for headings.
+style.configure('Treeview.Heading', font=('Arial', 20, 'bold'))  #Set font size for headings.
 style.configure('Treeview', font=('Arial', 16))  #Set font size for rows.
 
-#Linking the scrollbar to the Treeview:
+#Linking the scrollbar to the Treeview
 scrollbar = ttk.Scrollbar(right_frame, orient=VERTICAL, command=tree.yview)
 tree.configure(yscrollcommand=scrollbar.set)  #It will set scrollbar size according to the number of data in the treeview.
 scrollbar.grid(row=1, column=4, sticky="ns", padx=1) 
 scrollbar.configure(command=tree.yview)       #It will link scrollbar to the tree.
 
-#It lifts scrollbar infront of the treeview.
+#It lifts scrollbar above infront of the treeview.
 scrollbar.lift()
 
 #Function to show the selected employee records in the left frame entries:
@@ -204,24 +285,23 @@ def populate_fields(event):
 #Binding the treeview selection event to the populate_fields function:
 tree.bind('<<TreeviewSelect>>', populate_fields)
 
-
 ##################################################################Bottom Frame (Buttons)#################################################################################
 button_frame = CTkFrame(window, fg_color="dark sea green")
-button_frame.grid(row=2, column=0, columnspan=2, sticky="ew", padx=10, pady=10) 
+button_frame.grid(row=2, column=0, columnspan=2, sticky="ew", padx=10, pady=10)
 
-new_button = CTkButton(button_frame, text='New employee', height=37)
+new_button = CTkButton(button_frame, text='New employee', command=lambda: clear(True), height=37)
 new_button.grid(row=0, column=0, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(0, weight=1)
 
-add_button = CTkButton(button_frame, text='Add Employee', height=37,command=add_employee_gui)
+add_button = CTkButton(button_frame, text='Add Employee', command=add_employee_gui, height=37)
 add_button.grid(row=0, column=1, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(1, weight=1)
 
-update_button = CTkButton(button_frame, text='Update Employee',command=update_employee_gui, height=37)
+update_button = CTkButton(button_frame, text='Update Employee', command=update_employee_gui, height=37)
 update_button.grid(row=0, column=2, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(2, weight=1)
 
-delete_button = CTkButton(button_frame, text='Delete Employee',command=delete_employee_gui, height=37)
+delete_button = CTkButton(button_frame, text='Delete Employee', command=delete_employee_gui, height=37)
 delete_button.grid(row=0, column=3, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(3, weight=1)
 
