@@ -61,7 +61,7 @@ def update_employee(employee_id, name, phone, role, gender, salary):
             messagebox.showerror("Database Error", f"Failed to update employee: {e}")
         finally:
             conn.close()
-
+            
 #Function to reset IDs sequentially whenever we delete employe record from the table:
 def reset_ids():
     conn = connect_db()
@@ -131,3 +131,4 @@ def delete_all_employees():
                 messagebox.showerror("Database Error", f"Failed to delete all employees: {e}")
             finally:
                 conn.close()
+

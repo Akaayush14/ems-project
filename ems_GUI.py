@@ -3,87 +3,6 @@ from PIL import Image
 from tkinter import ttk, messagebox
 from database import * #It imports all functions from database.py
 
-#GUI functionality/core functionality: Recieves data from the functions above.
-#It calls the add_employee() functions to insert data into the database.
-def add_employee_gui():
-    try:
-        name = name_entry.get()
-        phone = phone_entry.get()
-        role = role_box.get()
-        gender = gender_box.get()
-        salary = salary_entry.get()
-
-       #Here, validating the inputs:
-        if not all([name, phone, role, gender, salary]):
-            messagebox.showerror("Error", "All fields are required!")
-            return
-
-        #Here, adding employee to the database:
-        add_employee(name, phone, role, gender, salary)
-        messagebox.showinfo("Success", "Employee added successfully!")
-        clear()
-        show_all()
-
-    except Exception as e:
-        messagebox.showerror("Error", f"An error occurred: {e}")
-
-#It calls update_employee() function to modify data from the database.
-#Update Employee GUI Functionality
-def update_employee_gui():
-    try:
-        employee_id = id_entry.get()
-        if not employee_id:
-            messagebox.showerror("Error", "No employee selected!")
-            return
-
-        name = name_entry.get()
-        phone = phone_entry.get()
-        role = role_box.get()
-        gender = gender_box.get()
-        salary = salary_entry.get()
-
-        #Here, validating the inputs:
-        if not all([name, phone, role, gender, salary]):
-            messagebox.showerror("Error", "All fields are required!")
-            return
-
-        # Here, updating employee to the database:
-        update_employee(employee_id, name, phone, role, gender, salary)
-        messagebox.showinfo("Success", "Employee updated successfully!")
-        show_all()
-
-    except Exception as e:
-        messagebox.showerror("Error", f"An error occurred: {e}")
-
-#It calls database query to fetch employee data based on the selected option and entered data in the search entry box.
-def search_employee():
-    try:
-        search_by = search_box.get()
-        search_value = search_Entry.get().strip()
-
-        if search_by == "Search By" or not search_value:
-            messagebox.showerror("Error", "Select a search category and enter a value!")
-            return
-
-        conn = connect_db()
-        cursor = conn.cursor()
-
-        #Here, using lowercase for case-insensitive searching:
-        if search_by.lower() == "gender":
-            cursor.execute(f'SELECT * FROM employees WHERE LOWER({search_by}) = LOWER(?)', (search_value,))
-        else:
-            cursor.execute(f'SELECT * FROM employees WHERE LOWER({search_by}) LIKE LOWER(?)', ('%' + search_value + '%',))
-
-        rows = cursor.fetchall()
-        conn.close()
-
-        tree.delete(*tree.get_children())#It clears the tree.
-        for employee in rows:
-            tree.insert("", END, values=employee)
-
-    except Exception as e:
-        messagebox.showerror("Error", f"An error occurred: {e}")
-
 #It calls delete_employee() function to delete the employee from the database.
 def delete_employee_gui():
     try:
@@ -294,11 +213,11 @@ new_button = CTkButton(button_frame, text='New employee', height=37)
 new_button.grid(row=0, column=0, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(0, weight=1)
 
-add_button = CTkButton(button_frame, text='Add Employee', height=37,command =add_employee_gui)
+add_button = CTkButton(button_frame, text='Add Employee', height=37,command=add_employee_gui)
 add_button.grid(row=0, column=1, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(1, weight=1)
 
-update_button = CTkButton(button_frame, text='Update Employee',command =update_employee_gui, height=37)
+update_button = CTkButton(button_frame, text='Update Employee',command=update_employee_gui, height=37)
 update_button.grid(row=0, column=2, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(2, weight=1)
 
