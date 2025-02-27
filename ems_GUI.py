@@ -21,7 +21,8 @@ def add_employee_gui():
         #Here, adding employee to the database:
         add_employee(name, phone, role, gender, salary)
         messagebox.showinfo("Success", "Employee added successfully!")
-        
+        clear()
+        show_all()
 
     except Exception as e:
         messagebox.showerror("Error", f"An error occurred: {e}")
@@ -107,6 +108,21 @@ def show_all():
         employees = fetch_all_employees()
         for employee in employees:
             tree.insert("", END, values=employee)
+
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
+
+#It clears the field to the intital state whenever new button is clicked.
+def clear(value=False):
+    try:
+        if value:
+            tree.selection_remove(tree.focus())
+        id_entry.delete(0, END)
+        name_entry.delete(0, END)
+        phone_entry.delete(0, END)
+        role_box.set('Web Developer')
+        gender_box.set('Male')
+        salary_entry.delete(0, END)
 
     except Exception as e:
         messagebox.showerror("Error", f"An error occurred: {e}")
@@ -250,6 +266,26 @@ scrollbar.configure(command=tree.yview)       #It will link scrollbar to the tre
 #It lifts scrollbar infront of the treeview.
 scrollbar.lift()
 
+#Function to show the selected employee records in the left frame entries:
+def populate_fields(event):
+    selected_item = tree.selection()
+    if selected_item:
+        employee_data = tree.item(selected_item)['values']
+        id_entry.delete(0, END)
+        id_entry.insert(0, employee_data[0])
+        name_entry.delete(0, END)
+        name_entry.insert(0, employee_data[1])
+        phone_entry.delete(0, END)
+        phone_entry.insert(0, employee_data[2])
+        role_box.set(employee_data[3])
+        gender_box.set(employee_data[4])
+        salary_entry.delete(0, END)
+        salary_entry.insert(0, employee_data[5])
+
+#Binding the treeview selection event to the populate_fields function:
+tree.bind('<<TreeviewSelect>>', populate_fields)
+
+
 ##################################################################Bottom Frame (Buttons)#################################################################################
 button_frame = CTkFrame(window, fg_color="dark sea green")
 button_frame.grid(row=2, column=0, columnspan=2, sticky="ew", padx=10, pady=10) 
@@ -270,7 +306,7 @@ delete_button = CTkButton(button_frame, text='Delete Employee',command=delete_em
 delete_button.grid(row=0, column=3, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(3, weight=1)
 
-deleteall_button = CTkButton(button_frame, text='Delete All', height=37)
+deleteall_button = CTkButton(button_frame, text='Delete All', command=delete_all_employees, height=37)
 deleteall_button.grid(row=0, column=4, padx=20, pady=10, sticky="ew")
 button_frame.grid_columnconfigure(4, weight=1)
 
