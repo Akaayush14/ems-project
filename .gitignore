@@ -1,5 +1,6 @@
 # Ignore Python compiled files
 __pycache__/
+# Ignore .pyc files
 *.pyc
 *.pyo
 *.pyd

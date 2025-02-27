@@ -29,6 +29,62 @@ def connect_db():
         messagebox.showerror("Database Error", f"Failed to connect to the database: {e}")
         return None
     
+#Function to add an employee record:
+def add_employee(name, phone, role, gender, salary):
+    conn = connect_db()
+    if conn is not None:
+        try:
+            cursor = conn.cursor()
+            cursor.execute('''
+            INSERT INTO employees (name, phone, role, gender, salary)
+            VALUES (?, ?, ?, ?, ?)
+            ''', (name, phone, role, gender, salary))
+            conn.commit()
+        except sqlite3.Error as e:
+            messagebox.showerror("Database Error", f"Failed to add employee: {e}")
+        finally:
+            conn.close()
+        
+#Functions to update the employees ids, phone role, and others:
+def update_employee(employee_id, name, phone, role, gender, salary):
+    conn = connect_db()
+    if conn is not None:
+        try:
+            cursor = conn.cursor()
+            cursor.execute('''
+            UPDATE employees
+            SET name = ?, phone = ?, role = ?, gender = ?, salary = ?
+            WHERE id = ?
+            ''', (name, phone, role, gender, salary, employee_id))
+            conn.commit()
+        except sqlite3.Error as e:
+            messagebox.showerror("Database Error", f"Failed to update employee: {e}")
+        finally:
+            conn.close()
+#Function to reset IDs sequentially whenever we delete employe record from the table:
+def reset_ids():
+    conn = connect_db()
+    if conn is not None:
+        try:
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM employees ORDER BY id')
+            rows = cursor.fetchall()
+
+            cursor.execute('DELETE FROM employees')
+            cursor.execute('DELETE FROM sqlite_sequence WHERE name="employees"')
+
+            for index, row in enumerate(rows, start=1):
+                cursor.execute('''
+                INSERT INTO employees (id, name, phone, role, gender, salary)
+                VALUES (?, ?, ?, ?, ?, ?)
+                ''', (index, row[1], row[2], row[3], row[4], row[5]))
+
+            conn.commit()
+        except sqlite3.Error as e:
+            messagebox.showerror("Database Error", f"Failed to reset IDs: {e}")
+        finally:
+            conn.close()
+            
 #Function to bring or retrieve all employees data from the database(employee.db)
 def fetch_all_employees():
     conn = connect_db()
@@ -57,3 +113,4 @@ def delete_employee(employee_id):
             messagebox.showerror("Database Error", f"Failed to delete employee: {e}")
         finally:
             conn.close()
+
