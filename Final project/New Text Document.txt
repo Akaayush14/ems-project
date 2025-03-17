@@ -1,0 +1,54 @@
+#Contains delete all account code
+#Login last:
+#Button to delete all accounts:
+delete_all_button = CTkButton(root, text="Delete All Accounts", command=delete_all_accounts_confirmation)
+delete_all_button.place(x=580, y=363)
+
+#After def login:
+#Function to delete all accounts:
+def delete_all_accounts_confirmation():
+    if messagebox.askyesno("Confirmation", "Are you sure you want to delete ALL accounts? This action cannot be undone."):
+        if delete_all_accounts():
+            messagebox.showinfo("Success", "All accounts have been deleted.")
+        else:
+            messagebox.showerror("Error", "Failed to delete accounts.")
+
+#From database:
+####################################################################################Function to delete all account records:#############################################################################
+def delete_all_accounts():
+    try:
+        # Connect to the database
+        conn = connect_db()
+        if conn is None:
+            print("Error: Unable to connect to the database.")
+            return False
+
+        cursor = conn.cursor()
+
+        # Delete all records from the `users` table
+        cursor.execute("DELETE FROM users")
+        users_deleted = cursor.rowcount  # Number of rows deleted from `users`
+
+        # Delete all records from the `employees` table
+        cursor.execute("DELETE FROM employees")
+        employees_deleted = cursor.rowcount  # Number of rows deleted from `employees`
+
+        # Reset auto-increment sequences for both tables
+        cursor.execute("DELETE FROM sqlite_sequence WHERE name IN ('users', 'employees')")
+
+        # Commit the transaction
+        conn.commit()
+
+        # Print the results
+        print(f"Successfully deleted {users_deleted} accounts from 'users' table.")
+        print(f"Successfully deleted {employees_deleted} accounts from 'employees' table.")
+
+        # Close the connection
+        cursor.close()
+        conn.close()
+
+        return True
+    except Exception as e:
+        print(f"Error deleting accounts: {e}")
+        return False
+
