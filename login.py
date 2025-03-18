@@ -15,8 +15,8 @@ def login():
         import ems_GUI  
     else:
         messagebox.showerror('Error', 'Incorrect credentials!')
-
 root = CTk()
+
 
 #calling the on_closing fuction and here the predefined text will tell the tkinter to close the window.
 root.protocol("WM_DELETE_WINDOW", on_closing)
